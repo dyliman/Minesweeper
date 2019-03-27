@@ -36,12 +36,12 @@ class App extends React.Component {
       return (
         <Play difficulty={this.state.difficulty} custom={this.state.customSize}/>
       )
-    }
+    } 
   }
 
   render() {
     return(
-      <div className="">
+      <div className="minesweeper">
         {this.conditionalRender()}
       </div>
     )

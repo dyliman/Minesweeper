@@ -6,6 +6,7 @@ class Play extends React.Component {
     this.state = {
       board: [],
       bombs: 0,
+      flags: 0
     }
     this.generateBoard = this.generateBoard.bind(this);
     this.placeMines = this.placeMines.bind(this);
@@ -141,13 +142,13 @@ class Play extends React.Component {
     currentPosition[0] = parseInt(currentPosition[0])
     currentPosition[1] = parseInt(currentPosition[1])
     if(nameOfClass === "hidden bomb") {
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb flag" onContextMenu={this.rightClick}></div>
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb flag" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden bomb flag"){
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb" onContextMenu={this.rightClick}></div>
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden"){
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden flag" onContextMenu={this.rightClick}></div>
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden flag" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden flag"){
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden" onContextMenu={this.rightClick}></div>
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     }
     this.setState({board: this.state.board})
   }

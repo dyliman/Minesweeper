@@ -63,7 +63,7 @@ class Settings extends React.Component {
             {this.customOptions()}
           </div>
         </div>
-        <div onClick={()=>this.props.changeSettings(this.state.difficulty,this.state.custom)}>Save Settings</div>
+        <div onClick={()=>{this.props.changeSettings(this.state.difficulty,this.state.custom); this.props.done();}}>Save Settings</div>
       </div>
     )
   }

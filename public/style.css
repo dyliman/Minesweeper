@@ -1,3 +1,8 @@
+.minesweeper {
+  display: flex;
+  justify-content: center;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -10,6 +15,14 @@
   border: 1px;
   border-style: solid;
   cursor: pointer;
+}
+
+.hidden {
+  background-color: lightblue;
+}
+
+.visible {
+  background-color: white;
 }
 
 .flag {
