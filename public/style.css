@@ -1,0 +1,17 @@
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.hidden, .visible {
+  width: 15px;
+  height: 15px;
+  padding: 2px;
+  border: 1px;
+  border-style: solid;
+  cursor: pointer;
+}
+
+.flag {
+  background-color: red;
+}
