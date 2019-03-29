@@ -26,5 +26,9 @@
 }
 
 .flag {
+  background-color: green;
+}
+
+.lose {
   background-color: red;
 }

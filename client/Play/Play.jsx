@@ -6,26 +6,30 @@ class Play extends React.Component {
     this.state = {
       board: [],
       bombs: 0,
-      flags: 0
+      flags: 0,
+      bombLocations: [],
+      lose: false,
+      win: false
     }
     this.generateBoard = this.generateBoard.bind(this);
     this.placeMines = this.placeMines.bind(this);
     this.leftClick = this.leftClick.bind(this);
     this.rightClick = this.rightClick.bind(this);
     this.uncover = this.uncover.bind(this);
+    this.checkBoard = this.checkBoard.bind(this);
   }
 
   componentDidMount() {
     let difficulty = this.props.difficulty;
     if(difficulty === "easy"){
-      this.generateBoard(10,10)
-      this.setState({bombs: 25})
+      this.generateBoard(8,8)
+      this.setState({bombs: 10})
     } else if(difficulty === "medium") {
-      this.generateBoard(15,15)
-      this.setState({bombs: 50})
+      this.generateBoard(16,16)
+      this.setState({bombs: 40})
     } else if(difficulty === "hard") {
-      this.generateBoard(20,20)
-      this.setState({bombs: 100})
+      this.generateBoard(16,30)
+      this.setState({bombs: 99})
     } else if(difficulty === "custom") {
       this.generateBoard(this.props.custom[0], this.props.custom[1])
       this.setState({bombs: this.props.custom[2]})
@@ -76,6 +80,7 @@ class Play extends React.Component {
       let row = position[0];
       let column = position[1];
       placeableArray.splice(randomPlace,1)
+      this.state.bombLocations.push(`${row} ${column}`)
       board[row][column] = <div key={`${row} ${column}`} name={`${row} ${column}`} className="hidden bomb" onClick={this.leftClick} onContextMenu={this.rightClick}></div>;
       bombsLeft -= 1;
     }
@@ -116,6 +121,9 @@ class Play extends React.Component {
         }
       }
     }
+    if(surroundingBombs === 0) {
+      surroundingBombs = ""
+    }
     this.state.board[row][col] = <div key={`${row} ${col}`} name={`${row} ${col}`} className="visible">{`${surroundingBombs}`}</div>
     this.setState({board: this.state.board})
   }
@@ -127,12 +135,12 @@ class Play extends React.Component {
     currentPosition[1] = parseInt(currentPosition[1])
 
     if(nameOfClass === "hidden bomb") {
-      console.log("You Lose")
       this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="visible bomb">B</div>
       this.setState({board: this.state.board})
     } else {
       this.uncover(currentPosition[0],currentPosition[1])
     }
+    this.checkBoard();
   }
 
   rightClick(event) {
@@ -151,14 +159,68 @@ class Play extends React.Component {
       this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     }
     this.setState({board: this.state.board})
+    this.checkBoard()
+  }
+
+  checkBoard() {
+    this.state.flag = 0;
+    let uncovered = 0;
+    for(let i = 0; i < this.state.board.length; i++){
+      for(let j = 0; j < this.state.board[i].length; j++){
+        if(this.state.board[i][j].props.className.includes("flag") || this.state.board[i][j].props.className.includes("visible")){
+          uncovered += 1
+        }
+        if(this.state.board[i][j].props.className.includes("flag")){
+          this.state.flag += 1;
+        } else if(this.state.board[i][j].props.className === "visible bomb"){
+          for(let k = 0; k < this.state.bombLocations.length; k++){
+            let bombs = this.state.bombLocations[k].split(" ")
+            bombs[0] = parseInt(bombs[0]);
+            bombs[1] = parseInt(bombs[1]);
+            this.state.board[bombs[0]][bombs[1]] = <div key={`${bombs[0]} ${bombs[1]}`} name={`${bombs[0]} ${bombs[1]}`} className="visible bomb lose">B</div>
+            this.state.lose = true
+            this.setState({lose: true})
+          }
+        }
+      }
+    }
+    let squares = this.state.board.length * this.state.board[0].length
+    if(uncovered === squares && this.state.lose === false) {
+      this.setState({win: true})
+    }
+  }
+
+  winLose() {
+    if(this.state.win){
+      return(
+        <div>
+          Congratulations, You Win!!
+          <div onClick={() => this.props.display("home")}>Play Again?</div>
+        </div>
+      )
+    } else if(this.state.lose){
+      return(
+        <div>
+          Sorry, You Lose!
+          <div onClick={() => this.props.display("home")}>Try Again?</div>
+        </div>
+      )
+    } else {
+      //do nothing
+    }
   }
 
   render() {
     return(
       <div className="play">
-        {this.state.board.map((row)=>{
-          return (<div className="row">{row}</div>)
-        })}
+        <div>
+          {this.state.board.map((row)=>{
+            return (<div className="row">{row}</div>)
+          })}
+        </div>
+        <div>
+          {this.winLose()}
+        </div>
       </div>
     )
   }

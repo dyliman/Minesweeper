@@ -34,7 +34,7 @@ class App extends React.Component {
       )
     } else if(display === "play"){
       return (
-        <Play difficulty={this.state.difficulty} custom={this.state.customSize}/>
+        <Play difficulty={this.state.difficulty} custom={this.state.customSize } display={this.changeDisplay}/>
       )
     } 
   }

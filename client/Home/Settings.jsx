@@ -9,6 +9,7 @@ class Settings extends React.Component {
     }
     this.changeDifficulty = this.changeDifficulty.bind(this);
     this.customOptions = this.customOptions.bind(this);
+    this.changeCustom = this.changeCustom.bind(this);
   }
 
   changeDifficulty(event){
