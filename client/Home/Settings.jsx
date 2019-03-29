@@ -56,15 +56,15 @@ class Settings extends React.Component {
     return(
       <div className="Settings">
         <div className="changeDifficulty">
-          <div name="easy" onClick={this.changeDifficulty}>Easy</div>
-          <div name="medium" onClick={this.changeDifficulty}>Medium</div>
-          <div name="hard" onClick={this.changeDifficulty}>Hard</div>
+          <div name="easy" onClick={this.changeDifficulty} className="button">Easy</div>
+          <div name="medium" onClick={this.changeDifficulty} className="button">Medium</div>
+          <div name="hard" onClick={this.changeDifficulty} className="button">Hard</div>
           <div>
-            <div name="custom" onClick={this.changeDifficulty}>Custom</div>
+            <div name="custom" onClick={this.changeDifficulty} className="button">Custom</div>
             {this.customOptions()}
           </div>
         </div>
-        <div onClick={()=>{this.props.changeSettings(this.state.difficulty,this.state.custom); this.props.done();}}>Save Settings</div>
+        <div onClick={()=>{this.props.changeSettings(this.state.difficulty,this.state.custom); this.props.done();}} className="button">Save Settings</div>
       </div>
     )
   }

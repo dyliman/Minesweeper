@@ -32,3 +32,27 @@
 .lose {
   background-color: red;
 }
+
+.button {
+    display: inline-block;
+    border: none;
+    border-radius: 25px;
+    padding: 5px 15px;
+    margin: 10px 0px;
+    text-decoration: none;
+    background-color: yellow;
+    color: black;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover, .button:focus {
+    background: gold;
+    color: black;
+}
+
+.button:focus {
+    outline: none;
+}

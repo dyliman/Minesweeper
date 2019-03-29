@@ -19,8 +19,8 @@ class Home extends React.Component {
     if(this.state.setting === false){
       return (
       <div className="home">
-        <div onClick={()=> this.props.display("play")}>Play</div>
-        <div onClick={this.changeSettingDisplay}>Settings</div>
+        <div onClick={()=> this.props.display("play")} className="button">Play</div>
+        <div onClick={this.changeSettingDisplay} className="button">Settings</div>
       </div>
       )
     } else {

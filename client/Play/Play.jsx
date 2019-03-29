@@ -11,12 +11,13 @@ class Play extends React.Component {
       lose: false,
       win: false
     }
-    this.generateBoard = this.generateBoard.bind(this);
-    this.placeMines = this.placeMines.bind(this);
-    this.leftClick = this.leftClick.bind(this);
-    this.rightClick = this.rightClick.bind(this);
-    this.uncover = this.uncover.bind(this);
-    this.checkBoard = this.checkBoard.bind(this);
+    this.generateBoard = this.generateBoard.bind(this); // generates the corret sized board with no mines placed
+    this.placeMines = this.placeMines.bind(this); // places mines in random positions with a safety area of where the user clicks
+    this.leftClick = this.leftClick.bind(this); // uncovers a space
+    this.rightClick = this.rightClick.bind(this); // flags a space
+    this.uncover = this.uncover.bind(this); // uncovers spaces untill there is a bomb beside the space
+    this.checkBoard = this.checkBoard.bind(this); // checks the board to if the user has won or lost
+    this.winLose = this.winLose.bind(this); // message/button displayed to the user if they want to return to the home page
   }
 
   componentDidMount() {
@@ -150,29 +151,30 @@ class Play extends React.Component {
     currentPosition[0] = parseInt(currentPosition[0])
     currentPosition[1] = parseInt(currentPosition[1])
     if(nameOfClass === "hidden bomb") {
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb flag" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
+      this.state.flags += 1;
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb flag" onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden bomb flag"){
+      this.state.flags -= 1;
       this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden bomb" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden"){
-      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden flag" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
+      this.state.flags += 1;
+      this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden flag" onContextMenu={this.rightClick}></div>
     } else if(nameOfClass === "hidden flag"){
+      this.state.flags -= 1;
       this.state.board[currentPosition[0]][currentPosition[1]] = <div key={`${currentPosition[0]} ${currentPosition[1]}`} name={`${currentPosition[0]} ${currentPosition[1]}`} className="hidden" onClick={this.leftClick} onContextMenu={this.rightClick}></div>
     }
-    this.setState({board: this.state.board})
+    this.setState({board: this.state.board, flags: this.state.flags})
     this.checkBoard()
   }
 
   checkBoard() {
-    this.state.flag = 0;
-    let uncovered = 0;
+    let uncovered = this.state.flags;
     for(let i = 0; i < this.state.board.length; i++){
       for(let j = 0; j < this.state.board[i].length; j++){
-        if(this.state.board[i][j].props.className.includes("flag") || this.state.board[i][j].props.className.includes("visible")){
+        if(this.state.board[i][j].props.className.includes("visible")){
           uncovered += 1
         }
-        if(this.state.board[i][j].props.className.includes("flag")){
-          this.state.flag += 1;
-        } else if(this.state.board[i][j].props.className === "visible bomb"){
+        if(this.state.board[i][j].props.className === "visible bomb"){
           for(let k = 0; k < this.state.bombLocations.length; k++){
             let bombs = this.state.bombLocations[k].split(" ")
             bombs[0] = parseInt(bombs[0]);
@@ -191,28 +193,29 @@ class Play extends React.Component {
   }
 
   winLose() {
+    let currentMessage = ""
+    let buttonMessage = "Give Up D:"
     if(this.state.win){
-      return(
-        <div>
-          Congratulations, You Win!!
-          <div onClick={() => this.props.display("home")}>Play Again?</div>
-        </div>
-      )
+      currentMessage = "Congratulations, You Win!!"
+      buttonMessage = "Play Again?"
     } else if(this.state.lose){
-      return(
-        <div>
-          Sorry, You Lose!
-          <div onClick={() => this.props.display("home")}>Try Again?</div>
-        </div>
-      )
-    } else {
-      //do nothing
+      currentMessage = "Sorry, You Lose..."
+      buttonMessage = "Try Again?"
     }
+    return(
+      <div>
+        {currentMessage}
+        <div onClick={() => this.props.display("home")} className="button">{buttonMessage}</div>
+      </div>
+    )
   }
 
   render() {
     return(
       <div className="play">
+        <div>
+          Remaining Flags: {this.state.bombs - this.state.flags}
+        </div>
         <div>
           {this.state.board.map((row)=>{
             return (<div className="row">{row}</div>)
