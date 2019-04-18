@@ -22,7 +22,12 @@ class Play extends React.Component {
 
   componentDidMount() {
     let difficulty = this.props.difficulty;
-    if(difficulty === "easy"){
+    if(this.props.difficultyCustom) {
+      this.generateBoard(this.props.custom[0], this.props.custom[1])
+      let bombDensity = .16
+      let bombs = Math.floor(this.props.custom[0] * this.props.custom[1] * bombDensity)
+      this.setState({bombs: bombs})
+    } else if(difficulty === "easy"){
       this.generateBoard(8,8)
       this.setState({bombs: 10})
     } else if(difficulty === "medium") {
@@ -31,9 +36,6 @@ class Play extends React.Component {
     } else if(difficulty === "hard") {
       this.generateBoard(16,30)
       this.setState({bombs: 99})
-    } else if(difficulty === "custom") {
-      this.generateBoard(this.props.custom[0], this.props.custom[1])
-      this.setState({bombs: this.props.custom[2]})
     }
   }
 

@@ -8,8 +8,9 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      difficulty: "easy", // easy/mid/hard/custom
-      customSize: [1,1,0],
+      difficulty: "easy", // easy/mid/hard
+      custom: false,
+      customSize: [8,8],
       display: "home" // home/game/end
     }
 
@@ -18,8 +19,12 @@ class App extends React.Component {
     this.changeDisplay = this.changeDisplay.bind(this);
   }
 
-  changeBoardSettings(difficulty, customSize){
-    this.setState({difficulty: difficulty, customSize: customSize})
+  changeBoardSettings(difficulty, custom, customSize){
+    if(custom === true){
+      this.setState({custom: !this.state.custom, customSize: customSize})
+    } else {
+      this.setState({difficulty: difficulty})
+    }
   }
 
   changeDisplay(display){
@@ -34,7 +39,7 @@ class App extends React.Component {
       )
     } else if(display === "play"){
       return (
-        <Play difficulty={this.state.difficulty} custom={this.state.customSize } display={this.changeDisplay}/>
+        <Play difficulty={this.state.difficulty} difficultyCustom={this.state.custom} custom={this.state.customSize} display={this.changeDisplay}/>
       )
     } 
   }

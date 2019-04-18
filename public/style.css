@@ -33,6 +33,10 @@
   background-color: red;
 }
 
+.active {
+  background-color: gold;
+}
+
 .button {
     display: inline-block;
     border: none;
