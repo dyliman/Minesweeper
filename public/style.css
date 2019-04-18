@@ -53,10 +53,14 @@
 }
 
 .button:hover, .button:focus {
-    background: gold;
+    background-color: gold;
     color: black;
 }
 
 .button:focus {
     outline: none;
+}
+
+.selected {
+  background-color: gold;
 }

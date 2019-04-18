@@ -27,13 +27,13 @@ class Play extends React.Component {
       let bombDensity = .16
       let bombs = Math.floor(this.props.custom[0] * this.props.custom[1] * bombDensity)
       this.setState({bombs: bombs})
-    } else if(difficulty === "easy"){
+    } else if(difficulty === "Easy"){
       this.generateBoard(8,8)
       this.setState({bombs: 10})
-    } else if(difficulty === "medium") {
+    } else if(difficulty === "Medium") {
       this.generateBoard(16,16)
       this.setState({bombs: 40})
-    } else if(difficulty === "hard") {
+    } else if(difficulty === "Hard") {
       this.generateBoard(16,30)
       this.setState({bombs: 99})
     }

@@ -6,7 +6,8 @@ class Settings extends React.Component {
     this.state = {
       difficulty: "easy",
       custom: [8,8],
-      customActive: false
+      customActive: false,
+      customSelect: "button"
     }
     this.changeDifficulty = this.changeDifficulty.bind(this);
     this.customOptions = this.customOptions.bind(this);
@@ -17,7 +18,11 @@ class Settings extends React.Component {
   changeDifficulty(event){
     let newDifficulty = event.target.getAttribute("name");
     if(newDifficulty === "custom"){
-      this.setState({customActive: !this.state.customActive})
+      let newClass = "button"
+      if(this.state.customSelect === "button"){
+        newClass = "button selected"
+      }
+      this.setState({customActive: !this.state.customActive, customSelect: newClass})
     } else {
       this.setState({difficulty: newDifficulty})
     }
@@ -62,25 +67,24 @@ class Settings extends React.Component {
   }
 
   difficulties() {
-    let difficulty = ["easy", "medium", "hard"]
+    let difficulty = ["Easy", "Medium", "Hard"]
     for(let i = 0; i < difficulty.length; i++){
       if(this.state.difficulty === difficulty[i]){
-        difficulty[i] = <div name={`${difficulty[i]} active`} onClick={this.changeDifficulty} className="button">{`${difficulty[i]}`}</div>
+        difficulty[i] = <div name={`${difficulty[i]}`} onClick={this.changeDifficulty} className="button selected">{`${difficulty[i]}`}</div>
       } else {
         difficulty[i] = <div name={`${difficulty[i]}`} onClick={this.changeDifficulty} className="button">{`${difficulty[i]}`}</div>
       }
     }
+    return difficulty.map((value)=>value)
   }
 
   render() {
     return(
       <div className="Settings">
         <div className="changeDifficulty">
-          <div name="easy" onClick={this.changeDifficulty} className="button">Easy</div>
-          <div name="medium" onClick={this.changeDifficulty} className="button">Medium</div>
-          <div name="hard" onClick={this.changeDifficulty} className="button">Hard</div>
+            {this.difficulties()}
           <div>
-            <div name="custom" onClick={this.changeDifficulty} className="button">Custom Size</div>
+            <div name="custom" onClick={this.changeDifficulty} className={this.state.customSelect}>Custom Size</div>
             {this.customOptions()}
           </div>
         </div>
